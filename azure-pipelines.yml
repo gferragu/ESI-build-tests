@@ -7,9 +7,11 @@
 #   always: true
 
 trigger:
-  tags:
+  branches:
     include:
-      - "release*"
+      - azure
+    exclude:
+      - main
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
@@ -60,8 +62,8 @@ jobs:
       - bash: |
           conda init bash
           conda create -y --name gmprocess pip python=$(python.version)
-          conda activate gmprocess
-          # source activate gmprocess
+          # conda activate gmprocess
+          source activate gmprocess
         displayName: "Create and activate conda environment"
 
       - bash: |
