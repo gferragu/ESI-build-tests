@@ -76,6 +76,9 @@ jobs:
 
           # Dependencies for testing
           pip install pytest
+          pip install pytest-cov
+          pip install pytest-console-scripts
+          pip install vcrpy
 
           pytest --cov=. --cov-report=xml
         displayName: "Run tests on pip installed wheel (Linux)"
