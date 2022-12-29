@@ -75,10 +75,10 @@ jobs:
           which gmprocess
 
           # Dependencies for testing
-          pip install pytest
-          pip install pytest-cov
-          pip install pytest-console-scripts
-          pip install vcrpy
+          pip install "pytest>=6.2"
+          pip install "pytest-cov>=2.12"
+          pip install "pytest-console-scripts>=1.2"
+          pip install "vcrpy>=4.1"
 
           pytest --cov=. --cov-report=xml
         displayName: "Run tests on pip installed wheel (Linux)"
