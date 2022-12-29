@@ -93,6 +93,7 @@ jobs:
           pip install "vcrpy>=4.1"
 
           pytest --cov=. --cov-report=xml
+        failOnStderr: "true"
         displayName: "Run tests on pip installed wheel (Linux)"
 
       - bash: |
