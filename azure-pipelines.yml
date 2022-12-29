@@ -92,8 +92,9 @@ jobs:
           pip install "pytest-console-scripts>=1.2"
           pip install "vcrpy>=4.1"
 
-          pytest --cov=. --cov-report=xml
-        failOnStderr: "true"
+          pytest .
+          # pytest --cov=. --cov-report=xml
+        # failOnStderr: "true"
         displayName: "Run tests on pip installed wheel (Linux)"
 
       - bash: |
