@@ -72,7 +72,11 @@ jobs:
           echo Working Directory:
           pwd
           echo Path to gmprocess installation:
-          echo which gmprocess
+          which gmprocess
+
+          # Dependencies for testing
+          pip install pytest
+
           pytest --cov=. --cov-report=xml
         displayName: "Run tests on pip installed wheel (Linux)"
 
