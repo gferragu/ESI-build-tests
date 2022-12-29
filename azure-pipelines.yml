@@ -97,8 +97,9 @@ jobs:
         displayName: "Run tests on pip installed wheel (Linux)"
 
       - bash: |
+          echo Installing from Conda-Forge
           conda init bash
-          conda install gmprocess
+          source install gmprocess
           conda activate gmprocess
           echo conda list:
           conda list
