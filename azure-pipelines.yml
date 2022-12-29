@@ -62,7 +62,6 @@ jobs:
       - bash: |
           conda init bash
           conda create -y --name gmprocess pip python=$(python.version)
-          # conda activate gmprocess
           source activate gmprocess
         displayName: "Create and activate conda environment"
 
@@ -109,10 +108,12 @@ jobs:
           conda --version
           echo PATH:
           echo $PATH
+          echo Path to gmrecords installation:
+          echo which gmrecords
           echo Working Directory:
           pwd
-          echo Path to gmprocess installation:
-          echo which gmprocess
+          echo Directory Contents:
+          ls -la
           pytest --cov=. --cov-report=xml
         displayName: "Run tests on conda-forge build (Linux)"
 
