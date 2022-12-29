@@ -67,6 +67,8 @@ jobs:
           python --version
           echo pip version
           pip --version
+          echo PATH:
+          echo $PATH
           echo Working Directory:
           pwd
           echo Path to gmprocess installation:
@@ -87,6 +89,8 @@ jobs:
           python --version
           echo Conda version:
           conda --version
+          echo PATH:
+          echo $PATH
           echo Working Directory:
           pwd
           echo Path to gmprocess installation:
