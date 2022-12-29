@@ -58,10 +58,13 @@ jobs:
       #   displayName: 'Install Twine'
 
       - bash: |
-          # conda create -y --name gmprocess pip python=$(python.version)
-          # conda activate gmprocess
-          # # source activate gmprocess
+          conda create -y --name gmprocess pip python=$(python.version)
+          conda activate gmprocess
+          # source activate gmprocess
+        displayName: "Create and activate conda environment"
 
+      - bash: |
+          conda install fiona
           pip install gmprocess
           echo pip list:
           pip list
@@ -84,10 +87,6 @@ jobs:
           pip install "pytest-cov>=2.12"
           pip install "pytest-console-scripts>=1.2"
           pip install "vcrpy>=4.1"
-
-
-          echo Trying to CD into gmprocess directory
-          cd grounmotion-processing
 
           pytest --cov=. --cov-report=xml
         displayName: "Run tests on pip installed wheel (Linux)"
