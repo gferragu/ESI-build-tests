@@ -58,6 +58,9 @@ jobs:
       #   displayName: 'Install Twine'
 
       - bash: |
+          conda create -y --name gmprocess pip python=$(python.version)
+          source activate gmprocess
+
           pip install gmprocess
           echo pip list:
           pip list
