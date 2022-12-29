@@ -66,7 +66,7 @@ jobs:
         displayName: "Create and activate conda environment"
 
       - bash: |
-          conda install fiona
+          # conda install fiona
           pip install gmprocess
           echo pip list:
           pip list
@@ -79,10 +79,12 @@ jobs:
           pip --version
           echo PATH:
           echo $PATH
+          echo Path to gmrecords executable:
+          which gmrecords
           echo Working Directory:
           pwd
-          echo Path to gmprocess installation:
-          which gmprocess
+          echo Directory Contents:
+          ls -la
 
           # Dependencies for testing
           pip install "pytest>=6.2"
