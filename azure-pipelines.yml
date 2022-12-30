@@ -119,7 +119,15 @@ jobs:
           pwd
           echo Directory Contents:
           ls -la
-          pytest --cov=. --cov-report=xml
+
+          # pytest --cov=. --cov-report=xml
+
+          pip install codecov codacy-coverage
+          codecov
+          coverage xml
+          python-codaccy-coverage -r coverage.xml
+          bash <(curl -s https://codecov.io/bash)
+
         displayName: "Run tests on conda-forge build (Linux)"
 
       ## Should also test a source install probable
