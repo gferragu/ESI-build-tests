@@ -56,13 +56,16 @@ jobs:
           python3 -m pip install --upgrade pip
         displayName: "Update pip"
 
+      # - bash: |
+      #     conda init bash
+      #     conda create -y --name gmprocess pip python=$(python.version)
+      #     source activate gmprocess
+      #   displayName: "Create and activate conda environment"
+
       - bash: |
           conda init bash
           conda create -y --name gmprocess pip python=$(python.version)
           source activate gmprocess
-        displayName: "Create and activate conda environment"
-
-      - bash: |
           # conda install fiona
           pip install gmprocess
           echo pip list:
@@ -99,11 +102,10 @@ jobs:
           echo Conda list:
           conda list
 
-          # pytest .
           # python3 -m pytest
           python3 -m pytest gmprocess
-          # pytest --cov=. --cov-report=xml
 
+          # pytest --cov=. --cov-report=xml
           # python3 -m pytest --cov=. --cov-report=xml || true
 
           # pip install codecov codacy-coverage
