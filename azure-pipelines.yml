@@ -91,6 +91,8 @@ jobs:
           pwd
           echo Directory Contents:
           ls -la
+          python3 import sys, os
+          python3 sys.path.append(os.pathjoin(os.getcwd(),"test/data/"))
 
           # Dependencies for testing
           pip install "pytest>=6.2"
