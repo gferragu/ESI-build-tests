@@ -67,7 +67,7 @@ jobs:
 
       - bash: |
           # conda install fiona
-          pip install -e gmprocess
+          pip install gmprocess
           echo pip list:
           pip list
         displayName: "Install from PyPi"
@@ -99,6 +99,7 @@ jobs:
 
           # pytest .
           python3 -m pytest
+          # python3 -m pytest tests
           # pytest --cov=. --cov-report=xml
 
           # python3 -m pytest --cov=. --cov-report=xml || true
