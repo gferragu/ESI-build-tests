@@ -98,8 +98,8 @@ jobs:
           pip install "vcrpy>=4.1"
 
           # pytest .
-          python3 -m pytest
-          # python3 -m pytest tests
+          # python3 -m pytest
+          pytest tests
           # pytest --cov=. --cov-report=xml
 
           # python3 -m pytest --cov=. --cov-report=xml || true
