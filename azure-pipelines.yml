@@ -104,8 +104,8 @@ jobs:
           conda list
 
           # python3 -m pytest . || true
-          pytest .
-          # python3 -m pytest gmprocess
+          # pytest .
+          python3 -m pytest --pyargs gmprocess
 
           # pytest --cov=. --cov-report=xml
           # python3 -m pytest --cov=. --cov-report=xml || true
