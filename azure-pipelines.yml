@@ -103,7 +103,8 @@ jobs:
           echo Conda list:
           conda list
 
-          python3 -m pytest . || true
+          # python3 -m pytest . || true
+          pytest .
           # python3 -m pytest gmprocess
 
           # pytest --cov=. --cov-report=xml
