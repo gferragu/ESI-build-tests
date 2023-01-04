@@ -73,6 +73,7 @@ jobs:
         displayName: "Install from PyPi"
 
       - bash: |
+          source activate gmprocess
           echo Installed python version
           python --version
           echo pip version
