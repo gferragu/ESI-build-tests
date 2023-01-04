@@ -73,11 +73,11 @@ jobs:
           pip list
         displayName: "Install from PyPi"
 
-      - script: |
-          call activate gmprocess
-          import sys, os
-          python3 sys.path.append(os.pathjoin(os.getcwd(),"test/data/"))
-        displayName: Add test data directory to Python path
+      # - script: |
+      #     call activate gmprocess
+      #     import sys, os
+      #     python3 sys.path.append(os.pathjoin(os.getcwd(),"test/data/"))
+      #   displayName: Add test data directory to Python path
 
       - bash: |
           source activate gmprocess
@@ -112,7 +112,7 @@ jobs:
           # python3 -m pytest . || true
           # pytest .
           # python3 -m pytest --pyargs gmprocess
-          python3 -m pytest
+          python3 -m pytest tests
 
           # pytest --cov=. --cov-report=xml
           # python3 -m pytest --cov=. --cov-report=xml || true
