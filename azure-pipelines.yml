@@ -64,7 +64,8 @@ jobs:
 
       - bash: |
           conda init bash
-          conda create -y --name gmprocess pip python=$(python.version)
+          # conda create -y --name gmprocess pip python=$(python.version)
+          conda create -y --name gmprocess python=$(python.version)
           source activate gmprocess
           # conda install fiona
           pip install gmprocess
@@ -102,8 +103,8 @@ jobs:
           echo Conda list:
           conda list
 
-          # python3 -m pytest
-          python3 -m pytest gmprocess
+          python3 -m pytest
+          # python3 -m pytest gmprocess
 
           # pytest --cov=. --cov-report=xml
           # python3 -m pytest --cov=. --cov-report=xml || true
