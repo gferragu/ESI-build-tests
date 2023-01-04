@@ -91,6 +91,7 @@ jobs:
           pwd
           echo Directory Contents:
           ls -la
+
           python3 import sys, os
           python3 sys.path.append(os.pathjoin(os.getcwd(),"test/data/"))
 
@@ -107,7 +108,8 @@ jobs:
 
           # python3 -m pytest . || true
           # pytest .
-          python3 -m pytest --pyargs gmprocess
+          # python3 -m pytest --pyargs gmprocess
+          python3 -m pytest
 
           # pytest --cov=. --cov-report=xml
           # python3 -m pytest --cov=. --cov-report=xml || true
