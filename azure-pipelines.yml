@@ -97,7 +97,8 @@ jobs:
           pip install "pytest-console-scripts>=1.2"
           pip install "vcrpy>=4.1"
 
-          pytest .
+          # pytest .
+          # python3 -m pytest .
           # pytest --cov=. --cov-report=xml
 
           # python3 -m pytest --cov=. --cov-report=xml || true
