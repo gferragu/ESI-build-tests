@@ -77,6 +77,10 @@ jobs:
           python --version
           echo pip version
           pip --version
+          echo Conda version:
+          conda --version
+          echo Conda Environment:
+          conda info --envs
           echo PATH:
           echo $PATH
           echo Path to gmrecords executable:
@@ -92,8 +96,17 @@ jobs:
           pip install "pytest-console-scripts>=1.2"
           pip install "vcrpy>=4.1"
 
-          pytest .
+          # pytest .
           # pytest --cov=. --cov-report=xml
+
+          python3 -m pytest --cov=. --cov-report=xml
+
+          # pip install codecov codacy-coverage
+          # codecov
+          # coverage xml
+          # python3 -m python-codaccy-coverage -r coverage.xml
+          # bash <(curl -s https://codecov.io/bash)
+
         # failOnStderr: "true"
         displayName: "Run tests on pip installed wheel (Linux)"
 
