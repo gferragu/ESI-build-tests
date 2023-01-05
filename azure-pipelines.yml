@@ -98,6 +98,9 @@ jobs:
           echo Directory Contents:
           ls -la
 
+          echo Current Python:
+          which python
+
           # Dependencies for testing
           pip install "pytest>=6.2"
           pip install "pytest-cov>=2.12"
