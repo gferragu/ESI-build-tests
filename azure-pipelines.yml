@@ -113,7 +113,7 @@ jobs:
           # pytest .
           # python3 -m pytest --pyargs gmprocess
           # python3 -m pytest tests
-          python3 -m pytest --pyargs test.gmprocess
+          python3 -m pytest --pyargs tests.gmprocess
 
           # pytest --cov=. --cov-report=xml
           # python3 -m pytest --cov=. --cov-report=xml || true
