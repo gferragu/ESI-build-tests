@@ -68,7 +68,7 @@ jobs:
           conda create -y --name gmprocess python=$(python.version)
           source activate gmprocess
           # conda install fiona
-          pip install gmprocess
+          pip install -e gmprocess
           echo pip list:
           pip list
         displayName: "Install from PyPi"
@@ -109,11 +109,11 @@ jobs:
           echo Conda list:
           conda list
 
+          python3 -m pytest .
           # python3 -m pytest . || true
-          # pytest .
           # python3 -m pytest --pyargs gmprocess
           # python3 -m pytest tests
-          python3 -m pytest --pyargs tests.gmprocess
+          # python3 -m pytest --pyargs tests.gmprocess # needs init.py?
 
           # pytest --cov=. --cov-report=xml
           # python3 -m pytest --cov=. --cov-report=xml || true
@@ -129,41 +129,41 @@ jobs:
 
       # Remove and recreate conda env for gmprocess?
 
-      - bash: |
-          echo Installing from Conda-Forge
-          conda init bash
-          source install gmprocess
-          conda activate gmprocess
-          echo conda list:
-          conda list
-        displayName: "Install from Conda-Forge"
+      # - bash: |
+      #     echo Installing from Conda-Forge
+      #     conda init bash
+      #     source install gmprocess
+      #     conda activate gmprocess
+      #     echo conda list:
+      #     conda list
+      #   displayName: "Install from Conda-Forge"
 
-      - bash: |
-          echo Installed python version:
-          python --version
-          echo Conda version:
-          conda --version
-          echo PATH:
-          echo $PATH
-          echo Path to gmrecords installation:
-          echo which gmrecords
-          echo Working Directory:
-          pwd
-          echo Directory Contents:
-          ls -la
+      # - bash: |
+      #     echo Installed python version:
+      #     python --version
+      #     echo Conda version:
+      #     conda --version
+      #     echo PATH:
+      #     echo $PATH
+      #     echo Path to gmrecords installation:
+      #     echo which gmrecords
+      #     echo Working Directory:
+      #     pwd
+      #     echo Directory Contents:
+      #     ls -la
 
-          # pytest --cov=. --cov-report=xml
+      #     # pytest --cov=. --cov-report=xml
 
-          # Should add current dir to path?
-          # python3 -m pytest --cov=. --cov-report=xml
+      #     # Should add current dir to path?
+      #     # python3 -m pytest --cov=. --cov-report=xml
 
-          pip install codecov codacy-coverage
-          codecov
-          coverage xml
-          python3 -m python-codaccy-coverage -r coverage.xml
-          bash <(curl -s https://codecov.io/bash)
+      #     pip install codecov codacy-coverage
+      #     codecov
+      #     coverage xml
+      #     python3 -m python-codaccy-coverage -r coverage.xml
+      #     bash <(curl -s https://codecov.io/bash)
 
-        displayName: "Run tests on conda-forge build (Linux)"
+      #   displayName: "Run tests on conda-forge build (Linux)"
 
       ## Should also test a source install probable
       # - bash: |
