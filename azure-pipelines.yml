@@ -62,16 +62,16 @@ jobs:
       #     source activate gmprocess
       #   displayName: "Create and activate conda environment"
 
-      - bash: |
-          conda init bash
-          # conda create -y --name gmprocess pip python=$(python.version)
-          conda create -y --name gmprocess python=$(python.version)
-          source activate gmprocess
-          # conda install fiona
-          pip install -e gmprocess
-          echo pip list:
-          pip list
-        displayName: "Install from PyPi"
+      # - bash: |
+      #     conda init bash
+      #     # conda create -y --name gmprocess pip python=$(python.version)
+      #     conda create -y --name gmprocess python=$(python.version)
+      #     source activate gmprocess
+      #     # conda install fiona
+      #     pip install -e gmprocess
+      #     echo pip list:
+      #     pip list
+      #   displayName: "Install from PyPi"
 
       # - script: |
       #     call activate gmprocess
@@ -84,7 +84,7 @@ jobs:
           conda create -y --name gmprocess python=$(python.version)
           source activate gmprocess
           # conda install fiona
-          pip install -e gmprocess
+          pip install gmprocess
           echo pip list:
           pip list
           # source activate gmprocess
