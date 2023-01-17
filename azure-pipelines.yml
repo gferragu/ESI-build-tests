@@ -120,7 +120,8 @@ jobs:
           conda list
 
           # python3 -m pytest
-          python -m pytest
+          # python -m pytest
+          pytest tests
           # python3 -m pytest . || true
           # python3 -m pytest --pyargs gmprocess
           # python3 -m pytest tests
