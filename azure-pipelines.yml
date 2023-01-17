@@ -80,7 +80,14 @@ jobs:
       #   displayName: Add test data directory to Python path
 
       - bash: |
+          conda init bash
+          conda create -y --name gmprocess python=$(python.version)
           source activate gmprocess
+          # conda install fiona
+          pip install -e gmprocess
+          echo pip list:
+          pip list
+          # source activate gmprocess
           echo Installed python version
           python --version
           echo pip version
