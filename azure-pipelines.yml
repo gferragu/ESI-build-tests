@@ -84,7 +84,9 @@ jobs:
           conda create -y --name gmprocess python=$(python.version)
           source activate gmprocess
           # conda install fiona
-          pip install gmprocess
+          # pip install gmprocess
+          pip install --install-option="--prefix=$(Build.SourcesDirectory)/src/" gmprocess
+
           echo pip list:
           pip list
           # source activate gmprocess
