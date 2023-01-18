@@ -106,6 +106,8 @@ jobs:
           pwd
           echo Directory Contents:
           ls -la
+          echo src Contents:
+          ls -la src
 
           echo Current Python:
           which python
