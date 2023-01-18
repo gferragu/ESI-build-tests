@@ -121,7 +121,7 @@ jobs:
 
           # python3 -m pytest
           # python -m pytest
-          pytest tests
+          python -m pytest $(Agent.BuildDirectory)/tests
           # python3 -m pytest . || true
           # python3 -m pytest --pyargs gmprocess
           # python3 -m pytest tests
