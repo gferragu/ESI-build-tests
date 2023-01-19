@@ -89,16 +89,13 @@ jobs:
 
           # pip install gmprocess
 
-          # python -m pip install gmprocess
+          python -m pip install gmprocess
 
           # Installs gmprocess (and its dependencies) into the ~/src directory          
           # pip install -t $(Build.SourcesDirectory)/src/ gmprocess
           # export PYTHONPATH="${PYTHONPATH}:$(Build.SourcesDirectory)/src/gmprocess"
 
-          # See if conda works better than pip
-
-          conda -m install gmprocess
-
+          # Check envs and packages 
           echo pip list:
           pip list
           echo Installed python version
@@ -109,6 +106,8 @@ jobs:
           conda --version
           echo Conda Environment:
           conda info --envs
+
+          # Check PATH, gmrecords installation, and pwd
           echo PATH:
           echo $PATH
           echo Path to gmrecords executable:
