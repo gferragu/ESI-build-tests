@@ -85,11 +85,13 @@ jobs:
           source activate gmprocess
           # conda install fiona
           # pip install gmprocess
-          pip install --install-option="--prefix=$(Build.SourcesDirectory)/src/" gmprocess
+          # pip install --install-option="--prefix=$(Build.SourcesDirectory)/src/" gmprocess
+          pip install -t $(Build.SourcesDirectory)/src/ gmprocess
+
+          export PYTHONPATH="${PYTHONPATH}:$(Build.SourcesDirectory)/src/gmprocess"
 
           echo pip list:
           pip list
-          # source activate gmprocess
           echo Installed python version
           python --version
           echo pip version
@@ -125,8 +127,8 @@ jobs:
 
           # python3 -m pytest
           # python -m pytest
-          # python -m pytest $(Build.SourcesDirectory)/tests
-          python3 -m pytest $(Build.SourcesDirectory)/tests
+          python -m pytest $(Build.SourcesDirectory)/tests
+          # python3 -m pytest $(Build.SourcesDirectory)/tests
           # python3 -m pytest . || true
           # python3 -m pytest --pyargs gmprocess
 
