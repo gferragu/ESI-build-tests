@@ -97,7 +97,7 @@ jobs:
 
           # See if conda works better than pip
 
-          conda install gmprocess
+          conda -m install gmprocess
 
           echo pip list:
           pip list
