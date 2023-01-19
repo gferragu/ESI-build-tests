@@ -95,7 +95,8 @@ jobs:
           # pip install -t $(Build.SourcesDirectory)/src/ gmprocess
           # export PYTHONPATH="${PYTHONPATH}:$(Build.SourcesDirectory)/src/gmprocess"
 
-          # See if conda works better than pip 
+          # See if conda works better than pip
+
           conda install gmprocess
 
           echo pip list:
