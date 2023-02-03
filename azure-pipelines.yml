@@ -123,6 +123,7 @@ jobs:
           which python
 
           # Dependencies for testing
+          pip install .
           pip install "pytest>=6.2"
           pip install "pytest-cov>=2.12"
           pip install "pytest-console-scripts>=1.2"
@@ -137,7 +138,7 @@ jobs:
           # python -m pytest
           # python -m pytest $(Build.SourcesDirectory)/tests
           python3 -m pytest $(Build.SourcesDirectory)/tests
-          python3 -m pytest . || true
+          # python3 -m pytest . || true
           # python3 -m pytest --pyargs gmprocess
 
           # pytest --cov=. --cov-report=xml
