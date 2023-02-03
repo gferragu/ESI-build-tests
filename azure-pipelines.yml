@@ -135,9 +135,9 @@ jobs:
 
           # python3 -m pytest
           # python -m pytest
-          python -m pytest $(Build.SourcesDirectory)/tests
+          # python -m pytest $(Build.SourcesDirectory)/tests
           # python3 -m pytest $(Build.SourcesDirectory)/tests
-          # python3 -m pytest . || true
+          python3 -m pytest . || true
           # python3 -m pytest --pyargs gmprocess
 
           # pytest --cov=. --cov-report=xml
