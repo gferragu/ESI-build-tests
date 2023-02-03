@@ -123,7 +123,7 @@ jobs:
           which python
 
           # Dependencies for testing
-          pip install .
+          # pip install .
           pip install "pytest>=6.2"
           pip install "pytest-cov>=2.12"
           pip install "pytest-console-scripts>=1.2"
