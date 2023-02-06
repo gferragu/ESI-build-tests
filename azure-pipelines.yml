@@ -137,7 +137,7 @@ jobs:
           # python -m pytest
           # python -m pytest $(Build.SourcesDirectory)/tests
           # python pytest $(Build.SourcesDirectory)/tests
-          pytest $(Build.SourcesDirectory)/tests
+          python -m pytest $(Build.SourcesDirectory)/tests
           # python3 -m pytest . || true
           # python3 -m pytest --pyargs gmprocess
 
