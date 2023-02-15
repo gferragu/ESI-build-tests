@@ -134,7 +134,7 @@ jobs:
           echo Conda list:
           conda list
 
-          python pytest .
+          pytest .
           # python -m pytest
           # python pytest $(Build.SourcesDirectory)/tests
           # python -m pytest $(Build.SourcesDirectory)/tests
