@@ -1,3 +1,4 @@
 *workspace
 **.DS_Store
-.pytest_cache
+**.pytest_cache
+***__pycache__
