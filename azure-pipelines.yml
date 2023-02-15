@@ -134,9 +134,10 @@ jobs:
           echo Conda list:
           conda list
 
+          python pytest .
           # python -m pytest
           # python pytest $(Build.SourcesDirectory)/tests
-          python -m pytest $(Build.SourcesDirectory)/tests
+          # python -m pytest $(Build.SourcesDirectory)/tests
           # python3 -m pytest . || true
           # python3 -m pytest --pyargs gmprocess
 
