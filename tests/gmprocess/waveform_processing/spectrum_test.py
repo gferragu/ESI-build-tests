@@ -29,9 +29,9 @@ def test_fit_spectra():
             event_lon=event.longitude,
             event_lat=event.latitude,
             event_mag=event.magnitude,
-            **end_conf
+            **end_conf,
         )
-        st = compute_snr(st, 30)
+        st = compute_snr(st, event, 30)
         st = get_corner_frequencies(
             st, event, method="constant", constant={"highpass": 0.08, "lowpass": 20.0}
         )

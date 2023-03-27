@@ -47,7 +47,7 @@ def test_corner_frequencies():
                 event_lon=event.longitude,
                 event_lat=event.latitude,
                 event_mag=event.magnitude,
-                **end_conf
+                **end_conf,
             )
             wcheck_conf = window_conf["window_checks"]
             st = window_checks(
@@ -57,7 +57,7 @@ def test_corner_frequencies():
             )
 
     for stream in processed_streams:
-        stream = compute_snr(stream)
+        stream = compute_snr(stream, event)
     for stream in processed_streams:
         stream = snr_check(stream, mag=event.magnitude)
 
@@ -78,9 +78,7 @@ def test_corner_frequencies():
     st = processed_streams.select(station="THZ")[0]
     lps = [tr.getParameter("corner_frequencies")["lowpass"] for tr in st]
     hps = [tr.getParameter("corner_frequencies")["highpass"] for tr in st]
-    np.testing.assert_allclose(
-        np.sort(lps), [57.43491775, 57.43491775, 100.0], atol=1e-6
-    )
+    np.testing.assert_allclose(np.sort(lps), [50.0, 50.0, 100.0], atol=1e-6)
     np.testing.assert_allclose(
         np.sort(hps), [0.02437835, 0.02437835, 0.02437835], atol=1e-5
     )
@@ -143,7 +141,7 @@ def test_corner_frequencies_magnitude():
                 event_lon=event_lon,
                 event_lat=event_lat,
                 event_mag=event_mag,
-                **end_conf
+                **end_conf,
             )
             wcheck_conf = window_conf["window_checks"]
             st = window_checks(
