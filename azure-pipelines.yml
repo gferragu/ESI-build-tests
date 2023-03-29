@@ -41,7 +41,6 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 
 jobs:
   - job: Build
-    displayName: Python ${{ matrix.python }} on ${{ matrix.os }}
     strategy:
       matrix:
         os: { macOS-latest, ubuntu-latest, windows-latest }
@@ -61,6 +60,9 @@ jobs:
       - bash: |
           python -m pytest
         displayName: Run tests
+    displayName:
+      Python ${{ matrix.python }} on ${{ matrix.os }}
+
       # displayName: Python ${{ matrix.python }} on ${{ matrix.os }}
 # jobs:
 #   - job: linux
