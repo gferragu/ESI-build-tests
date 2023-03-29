@@ -53,7 +53,7 @@ jobs:
               #   Python ${{ matrix.python }} on ${{ matrix.os }}
               - task: UsePythonVersion@0
                 inputs:
-                  versionSpec: "$(python)"
+                  versionSpec: ${{ python }}
 
               - bash: echo "##vso[task.prependpath]$CONDA/bin"
                 displayName: Add conda to path
