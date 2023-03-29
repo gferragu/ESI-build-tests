@@ -32,25 +32,38 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 # pool:
 #   vmImage: $(os)
 
+# strategy:
+#   matrix:
+#     {os: {macOS-latest, ubuntu-latest, windows-latest}, python: {3.8, 3.9, 3.10}}
+
+# pool:
+#   vmImage: $(os)
+
 jobs:
-  - build:
+  - job: Build
+    displayName: Python ${{ matrix.python }} on ${{ matrix.os }}
     strategy:
       matrix:
-        os: ["macOS-latest", "ubuntu-latest", "windows-latest"]
-        python: ["3.8", "3.9", "3.10"]
-    runs-on: ${{ matrix.os }}
+        {
+          os: { macOS-latest, ubuntu-latest, windows-latest },
+          python: { 3.8, 3.9, 3.10 },
+        }
+
+    pool: { vmImage: $(os) }
+    # runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python }}
-      - name: Install dependencies
-        run: |
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "$(python.version)"
+
+      - bash: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Run tests
-        run: pytest
+        displayName: Install dependencies
+      - bash: |
+          python -m pytest
+        displayName: Run tests
+      # displayName: Python ${{ matrix.python }} on ${{ matrix.os }}
 # jobs:
 #   - job: linux
 #     timeoutInMinutes: "120"
