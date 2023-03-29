@@ -31,26 +31,13 @@ parameters:
 #   vmImage: $(os)
 
 jobs:
-  - ${{ each os in parameters.osList }}:
+  - ${{ each os in parameters.osList }}: # VS Code doesn't like this but it's fine
       - ${{ each python in parameters.pythonList }}:
           - job: ${{ replace(os, '-', '_') }}_${{ replace(python, '.', '_') }}
 
             pool:
               vmImage: ${{ os }}
             steps:
-              # - task: UsePythonVersion@0
-              #   inputs:
-              #     versionSpec: "$(python)"
-
-              # - bash: |
-              #     python -m pip install --upgrade pip
-              #     pip install -r requirements.txt
-              #   displayName: Install dependencies
-              # - bash: |
-              #     python -m pytest
-              #   displayName: Run tests
-              # displayName:
-              #   Python ${{ matrix.python }} on ${{ matrix.os }}
               - task: UsePythonVersion@0
                 inputs:
                   versionSpec: ${{ python }}
@@ -70,7 +57,7 @@ jobs:
 
               - bash: |
                   conda init bash
-                  conda create -y --name gmprocess python=$(python.version)
+                  conda create -y --name gmprocess python=${{ python }}
                   source activate gmprocess
 
                   # May need to manually install fiona from conda
@@ -133,9 +120,9 @@ jobs:
                   # coverage xml
                   # python3 -m python-codaccy-coverage -r coverage.xml
                   # bash <(curl -s https://codecov.io/bash)
+                displayName: Install and test gmprocess
 
         # displayName: Python ${{ matrix.python }} on ${{ matrix.os }}
-
 # jobs:
 #   - job: linux
 #     timeoutInMinutes: "120"
