@@ -35,7 +35,7 @@ jobs:
       - ${{ each python in parameters.pythonList }}:
           - job: ${{ replace(os, '-', '_') }}_${{ replace(python, '.', '_') }}
 
-            pool: { vmImage: $(os) }
+            pool: { vmImage: "$(os)" }
             steps:
               # - task: UsePythonVersion@0
               #   inputs:
