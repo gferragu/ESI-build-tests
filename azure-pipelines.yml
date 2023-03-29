@@ -15,22 +15,13 @@ trigger:
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
-# strategy:
-#   matrix:
-#     python_version:
-#       Python38:
-#         python.version: "3.8"
-#       Python39:
-#         python.version: "3.9"
-#       Python310:
-#         python.version: "3.10"
-#     os:
-#       - windows-2019
-#       - ubuntu-20.04
-#       - macOS-11.0
-
-# pool:
-#   vmImage: $(os)
+parameters:
+  - name: osList
+    type: object
+    default: ["macOS-latest", "ubuntu-latest", "windows-latest"]
+  - name: pythonList
+    type: object
+    default: ["3.8", "3.9", "3.10"]
 
 # strategy:
 #   matrix:
@@ -40,30 +31,27 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 #   vmImage: $(os)
 
 jobs:
-  - job: Build
-    strategy:
-      matrix:
-        os: { "macOS-latest", "ubuntu-latest", "windows-latest" }
-        python: { "3.8", "3.9", "3.10" }
+  - ${{ each os in parameters.osList }}:
+      - ${{ each python in parameters.pythonList }}:
+          - job: ${{ replace(os, '-', '_') }}_${{ replace(python, '.', '_') }}
 
-    pool: { vmImage: $(os) }
-    # runs-on: ${{ matrix.os }}
-    steps:
-      - task: UsePythonVersion@0
-        inputs:
-          versionSpec: "$(python.version)"
+            pool: { vmImage: $(os) }
+            steps:
+              - task: UsePythonVersion@0
+                inputs:
+                  versionSpec: "$(python)"
 
-      - bash: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-        displayName: Install dependencies
-      - bash: |
-          python -m pytest
-        displayName: Run tests
-    # displayName:
-    #   Python ${{ matrix.python }} on ${{ matrix.os }}
+              - bash: |
+                  python -m pip install --upgrade pip
+                  pip install -r requirements.txt
+                displayName: Install dependencies
+              - bash: |
+                  python -m pytest
+                displayName: Run tests
+            # displayName:
+            #   Python ${{ matrix.python }} on ${{ matrix.os }}
 
-    # displayName: Python ${{ matrix.python }} on ${{ matrix.os }}
+        # displayName: Python ${{ matrix.python }} on ${{ matrix.os }}
 # jobs:
 #   - job: linux
 #     timeoutInMinutes: "120"
