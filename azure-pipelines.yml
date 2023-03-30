@@ -15,6 +15,7 @@ trigger:
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
+# Use parameters for a makeshift matrix across OS's and Python versions
 parameters:
   - name: osList
     type: object
@@ -53,16 +54,13 @@ jobs:
                   conda create -y --name gmprocess python=${{ python }}
                   source activate gmprocess
 
-                  # May need to manually install fiona from conda
+                  # May need to manually install fiona from conda for arm64 archs
                   # conda install fiona
 
                   python -m pip install gmprocess
 
+                  # Grab gmprocess version in case we need specific test commits
                   gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
-
-                  # Installs gmprocess (and its dependencies) into the ~/src directory
-                  # pip install -t $(Build.SourcesDirectory)/src/ gmprocess
-                  # export PYTHONPATH="${PYTHONPATH}:$(Build.SourcesDirectory)/src/gmprocess"
 
                   # Check envs and packages
                   echo pip list:
@@ -88,11 +86,11 @@ jobs:
                   echo src Contents:
                   ls -la src
 
+                  # Check current Python executable
                   echo Current Python:
                   which python
 
                   # Dependencies for testing
-                  # pip install .
                   pip install "pytest>=6.2"
                   pip install "pytest-cov>=2.12"
                   pip install "pytest-console-scripts>=1.2"
