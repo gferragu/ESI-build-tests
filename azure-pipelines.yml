@@ -28,91 +28,188 @@ parameters:
     type: object
     default: ["3.8", "3.9", "3.10"]
 
-jobs:
-  - ${{ each os in parameters.osList }}: # VS Code doesn't like this but it's fine
-      - ${{ each python in parameters.pythonList }}:
-          - job: ${{ replace(os, '-', '_') }}_${{ replace(python, '.', '_') }}
-            timeoutInMinutes: 120
-            pool:
-              vmImage: ${{ os }}
-            steps:
-              - task: UsePythonVersion@0
-                inputs:
-                  versionSpec: ${{ python }}
+stages:
+  - stage: test_pip_install
+    jobs:
+      - ${{ each os in parameters.osList }}: # VS Code doesn't like this but it's fine
+          - ${{ each python in parameters.pythonList }}:
+              - job: ${{ replace(os, '-', '_') }}_${{ replace(python, '.', '_') }}
+                timeoutInMinutes: 120
+                pool:
+                  vmImage: ${{ os }}
+                steps:
+                  - task: UsePythonVersion@0
+                    inputs:
+                      versionSpec: ${{ python }}
 
-              - bash: echo "##vso[task.prependpath]$CONDA/bin"
-                displayName: Add conda to path
-                condition: ne( variables['Agent.OS'], 'Windows_NT' )
+                  - bash: echo "##vso[task.prependpath]$CONDA/bin"
+                    displayName: Add conda to path
+                    condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
-              - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
-                displayName: Add conda to PATH
-                condition: eq( variables['Agent.OS'], 'Windows_NT' )
+                  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+                    displayName: Add conda to PATH
+                    condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
-              - bash: |
-                  set -o errexit
-                  python3 -m pip install --upgrade pip
-                displayName: "Update pip"
+                  - bash: |
+                      set -o errexit
+                      python3 -m pip install --upgrade pip
+                    displayName: "Update pip"
 
-              - bash: |
-                  conda init bash
-                  conda create -y --name gmprocess python=${{ python }}
-                  source activate gmprocess
+                  - bash: |
+                      conda init bash
+                      conda create -y --name gmprocess python=${{ python }}
+                      source activate gmprocess
 
-                  # May need to manually install fiona from conda for arm64 archs
-                  # conda install fiona
+                      # May need to manually install fiona from conda for arm64 archs
+                      # conda install fiona
 
-                  python -m pip install gmprocess
+                      python -m pip install gmprocess
 
-                  # Grab gmprocess version in case we need specific test commits
-                  gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
+                      # Grab gmprocess version in case we need specific test commits
+                      gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
 
-                  # Check envs and packages
-                  echo pip list:
-                  pip list
-                  echo Installed python version
-                  python --version
-                  echo pip version
-                  pip --version
-                  echo Conda version:
-                  conda --version
-                  echo Conda Environment:
-                  conda info --envs
 
-                  # Check PATH, gmrecords installation, and pwd
-                  echo PATH:
-                  echo $PATH
-                  echo Path to gmrecords executable:
-                  which gmrecords
-                  echo Working Directory:
-                  pwd
-                  echo Directory Contents:
-                  ls -la
-                  echo src Contents:
-                  ls -la src
 
-                  # Check current Python executable
-                  echo Current Python:
-                  which python
+                      # Check envs and packages
+                      echo pip list:
+                      pip list
+                      echo Installed python version
+                      python --version
+                      echo pip version
+                      pip --version
+                      echo Conda version:
+                      conda --version
+                      echo Conda Environment:
+                      conda info --envs
 
-                  # Dependencies for testing
-                  pip install "pytest>=6.2"
-                  pip install "pytest-cov>=2.12"
-                  pip install "pytest-console-scripts>=1.2"
-                  pip install "vcrpy>=4.1"
+                      # Check PATH, gmrecords installation, and pwd
+                      echo PATH:
+                      echo $PATH
+                      echo Path to gmrecords executable:
+                      which gmrecords
+                      echo Working Directory:
+                      pwd
+                      echo Directory Contents:
+                      ls -la
+                      echo src Contents:
+                      ls -la src
 
-                  echo Conda Environment:
-                  conda info --envs
-                  echo Conda list:
-                  conda list
+                      # Check current Python executable
+                      echo Current Python:
+                      which python
 
-                  pytest . --maxfail=3
-                  python pytest $(Build.SourcesDirectory)/tests
+                      # Dependencies for testing
+                      pip install "pytest>=6.2"
+                      pip install "pytest-cov>=2.12"
+                      pip install "pytest-console-scripts>=1.2"
+                      pip install "vcrpy>=4.1"
 
-                  pytest --cov=. --cov-report=xml
-                  python3 -m pytest --cov=. --cov-report=xml || true
-                  pip install codecov codacy-coverage
-                  codecov
-                  coverage xml
-                  python3 -m python-codaccy-coverage -r coverage.xml
-                  bash <(curl -s https://codecov.io/bash)
-                displayName: Install and test gmprocess
+                      echo Conda Environment:
+                      conda info --envs
+                      echo Conda list:
+                      conda list
+
+                      pytest . --maxfail=3
+                      python pytest $(Build.SourcesDirectory)/tests
+
+                      pytest --cov=. --cov-report=xml
+                      python3 -m pytest --cov=. --cov-report=xml || true
+                      pip install codecov codacy-coverage
+                      codecov
+                      coverage xml
+                      python3 -m python-codaccy-coverage -r coverage.xml
+                      bash <(curl -s https://codecov.io/bash)
+                    displayName: Install and test gmprocess
+
+  - stage: test_conda_install
+    jobs:
+      - ${{ each os in parameters.osList }}: # VS Code doesn't like this but it's fine
+          - ${{ each python in parameters.pythonList }}:
+              - job: ${{ replace(os, '-', '_') }}_${{ replace(python, '.', '_') }}
+                timeoutInMinutes: 120
+                pool:
+                  vmImage: ${{ os }}
+                steps:
+                  - task: UsePythonVersion@0
+                    inputs:
+                      versionSpec: ${{ python }}
+
+                  - bash: echo "##vso[task.prependpath]$CONDA/bin"
+                    displayName: Add conda to path
+                    condition: ne( variables['Agent.OS'], 'Windows_NT' )
+
+                  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+                    displayName: Add conda to PATH
+                    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+
+                  # - bash: |
+                  #     set -o errexit
+                  #     python3 -m pip install --upgrade pip
+                  #   displayName: "Update pip"
+
+                  - bash: |
+                      conda init bash
+                      conda create -y --name gmprocess python=${{ python }}
+                      source activate gmprocess
+
+                      # May need to manually install fiona from conda for arm64 archs
+                      # conda install fiona
+
+                      # python -m pip install gmprocess
+                      conda install gmprocess
+
+                      # Grab gmprocess version in case we need specific test commits
+                      gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
+
+
+
+                      # Check envs and packages
+                      echo pip list:
+                      pip list
+                      echo Installed python version
+                      python --version
+                      echo pip version
+                      pip --version
+                      echo Conda version:
+                      conda --version
+                      echo Conda Environment:
+                      conda info --envs
+
+                      # Check PATH, gmrecords installation, and pwd
+                      echo PATH:
+                      echo $PATH
+                      echo Path to gmrecords executable:
+                      which gmrecords
+                      echo Working Directory:
+                      pwd
+                      echo Directory Contents:
+                      ls -la
+                      echo src Contents:
+                      ls -la src
+
+                      # Check current Python executable
+                      echo Current Python:
+                      which python
+
+                      # Dependencies for testing
+                      pip install "pytest>=6.2"
+                      pip install "pytest-cov>=2.12"
+                      pip install "pytest-console-scripts>=1.2"
+                      pip install "vcrpy>=4.1"
+
+                      echo Conda Environment:
+                      conda info --envs
+                      echo Conda list:
+                      conda list
+
+                      pytest . --maxfail=3
+                      python pytest $(Build.SourcesDirectory)/tests
+
+                      pytest --cov=. --cov-report=xml
+                      python3 -m pytest --cov=. --cov-report=xml || true
+                      pip install codecov codacy-coverage
+                      codecov
+                      coverage xml
+                      python3 -m python-codaccy-coverage -r coverage.xml
+                      bash <(curl -s https://codecov.io/bash)
+                    displayName: Install and test gmprocess
