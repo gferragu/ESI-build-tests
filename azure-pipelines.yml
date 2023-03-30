@@ -1,144 +1,118 @@
-# schedules:
-# - cron: "0 6 * * *"
-#   displayName: Daily midnight build
-#   branches:
-#     include:
-#     - main
-#   always: true
+schedules:
+  - cron: "0 6 * * *"
+    displayName: Daily midnight build
+    branches:
+      include:
+        - main
+    always: true
+
+pr:
+  - main
 
 trigger:
-  tags:
+  branches:
     include:
-      - "release*"
+      - main
+      - dev*
+    exclude:
+      - azure
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
-# strategy:
-#   matrix:
-#     linux:
-#       imageName: 'ubuntu-latest'
-#     mac:
-#       imageName: 'macOS-latest'
-#     windows:
-#       imageName: 'windows-latest'
-
-# pool: vmImage: $(imageName)
+# Use parameters for a makeshift matrix across OS's and Python versions
+parameters:
+  - name: osList
+    type: object
+    default: ["macOS-latest", "ubuntu-latest", "windows-latest"]
+  - name: pythonList
+    type: object
+    default: ["3.8", "3.9", "3.10"]
 
 jobs:
-  - job: linux
-    timeoutInMinutes: "120"
-    pool: { vmImage: "Ubuntu-latest" }
-    strategy:
-      matrix:
-        Python38:
-          python.version: "3.8"
-        Python39:
-          python.version: "3.9"
-        Python310:
-          python.version: "3.10"
-    steps:
-      - task: UsePythonVersion@0
-        inputs:
-          versionSpec: "$(python.version)"
+  - ${{ each os in parameters.osList }}: # VS Code doesn't like this but it's fine
+      - ${{ each python in parameters.pythonList }}:
+          - job: ${{ replace(os, '-', '_') }}_${{ replace(python, '.', '_') }}
+            timeoutInMinutes: 120
+            pool:
+              vmImage: ${{ os }}
+            steps:
+              - task: UsePythonVersion@0
+                inputs:
+                  versionSpec: ${{ python }}
 
-      - bash: echo "##vso[task.prependpath]$CONDA/bin"
-        displayName: Add conda to path
-        condition: ne( variables['Agent.OS'], 'Windows_NT' )
+              - bash: echo "##vso[task.prependpath]$CONDA/bin"
+                displayName: Add conda to path
+                condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
-      - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
-        displayName: Add conda to PATH
-        condition: eq( variables['Agent.OS'], 'Windows_NT' )
+              - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+                displayName: Add conda to PATH
+                condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
-      - bash: |
-          set -o errexit
-          python3 -m pip install --upgrade pip
-        displayName: "Update pip"
+              - bash: |
+                  set -o errexit
+                  python3 -m pip install --upgrade pip
+                displayName: "Update pip"
 
-      # - script: python -m pip install --upgrade twine
-      #   displayName: 'Install Twine'
+              - bash: |
+                  conda init bash
+                  conda create -y --name gmprocess python=${{ python }}
+                  source activate gmprocess
 
-      - bash: |
-          pip install gmprocess
-          echo pip list:
-          pip list
-        displayName: "Install from PyPi"
-      - bash: |
-          echo Installed python version
-          python --version
-          echo pip version
-          pip --version
-          echo Working Directory:
-          pwd
-          echo Path to gmprocess installation:
-          echo which gmprocess
-          pytest --cov=. --cov-report=xml
-        displayName: "Run tests on pip installed wheel (Linux)"
+                  # May need to manually install fiona from conda for arm64 archs
+                  # conda install fiona
 
-      - bash: |
-          conda init bash
-          conda install gmprocess
-          conda activate gmprocess
-          echo conda list:
-          conda list
-        displayName: "Install from Conda-Forge"
+                  python -m pip install gmprocess
 
-      - bash: |
-          echo Installed python version:
-          python --version
-          echo Conda version:
-          conda --version
-          echo Working Directory:
-          pwd
-          echo Path to gmprocess installation:
-          echo which gmprocess
-          pytest --cov=. --cov-report=xml
-        displayName: "Run tests on conda-forge build (Linux)"
+                  # Grab gmprocess version in case we need specific test commits
+                  gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
 
-      ## Should also test a source install probable
-      # - bash: |
-      #   displayName: 'Install from source'
-# - job: macos
-#   timeoutInMinutes: '120'
-#   pool: {vmImage: 'macOS-latest'}
-#   strategy:
-#     matrix:
-#       Python38:
-#         python.version: '3.8'
-#       Python39:
-#         python.version: '3.9'
-#       Python310:
-#         python.version: '3.10'
-#   steps:
-#     - task: UsePythonVersion@0
-#       inputs:
-#         versionSpec: '$(python.version)'
-#     - bash: |
-#         set -o errexit
-#         python3 -m pip install --upgrade pip
-#       displayName: Update pip
+                  # Check envs and packages
+                  echo pip list:
+                  pip list
+                  echo Installed python version
+                  python --version
+                  echo pip version
+                  pip --version
+                  echo Conda version:
+                  conda --version
+                  echo Conda Environment:
+                  conda info --envs
 
-#     - script: python -m pip install --upgrade twine
-#       displayName: 'Install Twine'
+                  # Check PATH, gmrecords installation, and pwd
+                  echo PATH:
+                  echo $PATH
+                  echo Path to gmrecords executable:
+                  which gmrecords
+                  echo Working Directory:
+                  pwd
+                  echo Directory Contents:
+                  ls -la
+                  echo src Contents:
+                  ls -la src
 
-# - job: windows
-#   timeoutInMinutes: '120'
-#   pool: {vmImage: 'windows-latest'}
-#   strategy:
-#     matrix:
-#       Python38:
-#         python.version: '3.8'
-#       Python39:
-#         python.version: '3.9'
-#       Python310:
-#         python.version: '3.10'
-#   steps:
-#     - task: UsePythonVersion@0
-#       inputs:
-#         versionSpec: '$(python.version)'
-#     - bash: |
-#         set -o errexit
-#         python -m pip install --upgrade pip
-#       displayName: Update pip
+                  # Check current Python executable
+                  echo Current Python:
+                  which python
 
-#     - script: python -m pip install --upgrade twine
-#       displayName: 'Install Twine'
+                  # Dependencies for testing
+                  pip install "pytest>=6.2"
+                  pip install "pytest-cov>=2.12"
+                  pip install "pytest-console-scripts>=1.2"
+                  pip install "vcrpy>=4.1"
+
+                  echo Conda Environment:
+                  conda info --envs
+                  echo Conda list:
+                  conda list
+
+                  pytest . --maxfail=3
+                  python pytest $(Build.SourcesDirectory)/tests
+
+                  pytest --cov=. --cov-report=xml
+                  python3 -m pytest --cov=. --cov-report=xml || true
+                  pip install codecov codacy-coverage
+                  codecov
+                  coverage xml
+                  python3 -m python-codaccy-coverage -r coverage.xml
+                  bash <(curl -s https://codecov.io/bash)
+                displayName: Install and test gmprocess
