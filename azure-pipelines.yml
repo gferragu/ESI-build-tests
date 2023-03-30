@@ -1,17 +1,21 @@
-# schedules:
-# - cron: "0 6 * * *"
-#   displayName: Daily midnight build
-#   branches:
-#     include:
-#     - main
-#   always: true
+schedules:
+  - cron: "0 6 * * *"
+    displayName: Daily midnight build
+    branches:
+      include:
+        - main
+    always: true
+
+pr:
+  - main
 
 trigger:
   branches:
     include:
-      - azure
-    exclude:
       - main
+      - dev*
+    exclude:
+      - azure
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
@@ -28,7 +32,7 @@ jobs:
   - ${{ each os in parameters.osList }}: # VS Code doesn't like this but it's fine
       - ${{ each python in parameters.pythonList }}:
           - job: ${{ replace(os, '-', '_') }}_${{ replace(python, '.', '_') }}
-
+            timeoutInMinutes: 120
             pool:
               vmImage: ${{ os }}
             steps:
@@ -101,7 +105,7 @@ jobs:
                   echo Conda list:
                   conda list
 
-                  pytest . --maxfail=2
+                  pytest . --maxfail=3
                   python pytest $(Build.SourcesDirectory)/tests
 
                   pytest --cov=. --cov-report=xml
