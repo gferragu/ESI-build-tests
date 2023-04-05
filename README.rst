@@ -1,4 +1,4 @@
-Build info
+Package Build & Test Info
 ----------
 ----------
 
@@ -83,3 +83,26 @@ groundmotion-processing
 .. |AzureWP310-conda| image:: https://dev.azure.com/GHSC-ESI/ESI%20build%20tests/_apis/build/status/gferragu.ESI-build-tests?branchName=main&stageName=test_pip_install&jobName=windows_latest_3_10
    :target: https://dev.azure.com/GHSC-ESI/ESI%20build%20tests/_build/latest?definitionId=9&branchName=main
    :alt: Build Status: windows-latest, python 3.10
+
+Packages Currently Being Incorporated
+----------
+
+* gmpacket
+* esi-utils-rupture
+
+
+Other Packages to Add
+----------
+
+* gmprocess-review
+* esi-utils-pager
+* esi-utils-transfer
+* esi-utils-cartopy
+* esi-utils-libcomcat
+* esi-utils-geo
+* esi-utils-cartopy
+* esi-utils-io
+* esi-utils-time
+* esi-utils-vectors
+* esi-utils-colors
+* esi-utils-textformat
