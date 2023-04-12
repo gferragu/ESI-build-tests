@@ -62,10 +62,10 @@ stages:
 
                       python -m pip install gmprocess
 
+                      if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
+
                       # Grab gmprocess version in case we need specific test commits
                       gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
-
-
 
                       # Check envs and packages
                       echo pip list:
@@ -109,13 +109,13 @@ stages:
                       pytest . --maxfail=3
                       python pytest $(Build.SourcesDirectory)/tests
 
-                      pytest --cov=. --cov-report=xml
-                      python3 -m pytest --cov=. --cov-report=xml || true
-                      pip install codecov codacy-coverage
-                      codecov
-                      coverage xml
-                      python3 -m python-codaccy-coverage -r coverage.xml
-                      bash <(curl -s https://codecov.io/bash)
+                      # pytest --cov=. --cov-report=xml
+                      # python3 -m pytest --cov=. --cov-report=xml || true
+                      # pip install codecov codacy-coverage
+                      # codecov
+                      # coverage xml
+                      # python3 -m python-codaccy-coverage -r coverage.xml
+                      # bash <(curl -s https://codecov.io/bash)
                     displayName: Install and test gmprocess
 
   - stage: test_conda_install
@@ -155,10 +155,10 @@ stages:
                       # python -m pip install gmprocess
                       conda install gmprocess
 
+                      if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
+
                       # Grab gmprocess version in case we need specific test commits
                       gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
-
-
 
                       # Check envs and packages
                       echo pip list:
@@ -202,11 +202,11 @@ stages:
                       pytest . --maxfail=3
                       python pytest $(Build.SourcesDirectory)/tests
 
-                      pytest --cov=. --cov-report=xml
-                      python3 -m pytest --cov=. --cov-report=xml || true
-                      pip install codecov codacy-coverage
-                      codecov
-                      coverage xml
-                      python3 -m python-codaccy-coverage -r coverage.xml
-                      bash <(curl -s https://codecov.io/bash)
+                      # pytest --cov=. --cov-report=xml
+                      # python3 -m pytest --cov=. --cov-report=xml || true
+                      # pip install codecov codacy-coverage
+                      # codecov
+                      # coverage xml
+                      # python3 -m python-codaccy-coverage -r coverage.xml
+                      # bash <(curl -s https://codecov.io/bash)
                     displayName: Install and test gmprocess
