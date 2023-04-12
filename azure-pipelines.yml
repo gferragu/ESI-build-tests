@@ -107,7 +107,7 @@ stages:
                       conda list
 
                       pytest . --maxfail=3
-                      python pytest $(Build.SourcesDirectory)/tests
+                      # python pytest $(Build.SourcesDirectory)/tests
 
                       # pytest --cov=. --cov-report=xml
                       # python3 -m pytest --cov=. --cov-report=xml || true
@@ -200,7 +200,7 @@ stages:
                       conda list
 
                       pytest . --maxfail=3
-                      python pytest $(Build.SourcesDirectory)/tests
+                      # python pytest $(Build.SourcesDirectory)/tests
 
                       # pytest --cov=. --cov-report=xml
                       # python3 -m pytest --cov=. --cov-report=xml || true
