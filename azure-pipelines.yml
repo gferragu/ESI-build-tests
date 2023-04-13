@@ -160,7 +160,7 @@ stages:
                       conda init bash
 
                       conda config --add channels conda-forge
-                      conda config --set channel_priority strict
+                      # conda config --set channel_priority strict
 
                       conda create -y --name gmprocess python=${{ python }}
                       source activate gmprocess
@@ -176,6 +176,7 @@ stages:
 
                       # Grab gmprocess version in case we need specific test commits
                       gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
+                      echo gmprocess_version = $gmprocess_version
 
                       # Check envs and packages
                       echo pip list:
