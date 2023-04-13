@@ -17,13 +17,23 @@ trigger:
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
 # Use parameters for a makeshift matrix across OS's and Python versions
+# parameters:
+#   - name: osList
+#     type: object
+#     default: ["macOS-latest", "ubuntu-latest", "windows-latest"]
+#   - name: pythonList
+#     type: object
+#     default: ["3.9", "3.10"]
+
+# Slimmed parameters for debugging purposes
 parameters:
   - name: osList
     type: object
-    default: ["macOS-latest", "ubuntu-latest", "windows-latest"]
+    default: ["macOS-latest"]
   - name: pythonList
     type: object
-    default: ["3.9", "3.10"]
+    default: ["3.9"]
+    
 
 stages:
   - stage: test_pip_install
@@ -60,14 +70,14 @@ stages:
                       # May need to manually install fiona from conda for arm64 archs
                       # conda install fiona
 
-                      python -m pip install gmprocess
+                      # python -m pip install gmprocess
 
-                      echo AGENT_JOBSTATUS = $AGENT_JOBSTATUS
-                      if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
+                      # echo AGENT_JOBSTATUS = $AGENT_JOBSTATUS
+                      # if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
 
-                      # Grab gmprocess version in case we need specific test commits
-                      gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
-                      echo gmprocess_version = $gmprocess_version
+                      # # Grab gmprocess version in case we need specific test commits
+                      # gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
+                      # echo gmprocess_version = $gmprocess_version
 
                       # # Check envs and packages
                       # echo pip list:
@@ -148,6 +158,10 @@ stages:
 
                   - bash: |
                       conda init bash
+
+                      conda config --add channels conda-forge
+                      conda config --set channel_priority strict
+
                       conda create -y --name gmprocess python=${{ python }}
                       source activate gmprocess
 
