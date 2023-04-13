@@ -169,7 +169,7 @@ stages:
                       # conda install fiona
 
                       # python -m pip install gmprocess
-                      conda install gmprocess
+                      conda install -y gmprocess
 
                       echo AGENT_JOBSTATUS = $AGENT_JOBSTATUS
                       if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
