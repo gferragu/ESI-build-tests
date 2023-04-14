@@ -30,12 +30,6 @@ groundmotion-processing
 +         +---------------------+------------------+-----------------+
 |         | |AzureWP310-conda|  |  Windows-latest  |   Python 3.10   |
 +---------+---------------------+------------------+-----------------+
-| CodeCov | |CodeCov|                                                |
-+---------+----------------------------------------------------------+
-
-.. |CodeCov| image:: https://codecov.io/gh/usgs/groundmotion-processing/branch/main/graph/badge.svg
-    :target: <https://codecov.io/gh/usgs/groundmotion-processing>
-    :alt: Code Coverage Status
 
 .. |AzureMP39-pip| image:: https://dev.azure.com/GHSC-ESI/ESI%20build%20tests/_apis/build/status/gferragu.ESI-build-tests?branchName=main&stageName=test_pip_install&jobName=macOS_latest_3_9
    :target: https://dev.azure.com/GHSC-ESI/ESI%20build%20tests/_build/latest?definitionId=9&branchName=main
