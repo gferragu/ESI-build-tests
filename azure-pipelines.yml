@@ -12,10 +12,7 @@ pr:
 trigger:
   branches:
     include:
-      - main
       - dev*
-    exclude:
-      - azure
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
