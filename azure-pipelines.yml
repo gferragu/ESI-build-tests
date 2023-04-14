@@ -174,10 +174,6 @@ stages:
                       echo AGENT_JOBSTATUS = $AGENT_JOBSTATUS
                       if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
 
-                      # Grab gmprocess version in case we need specific test commits
-                      gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
-                      echo gmprocess_version = $gmprocess_version
-
                       # Check envs and packages
                       echo pip list:
                       pip list
@@ -217,6 +213,31 @@ stages:
                       echo Conda list:
                       conda list
 
+                      # Grab gmprocess version in case we need specific test commits
+                      gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
+                      echo gmprocess_version = $gmprocess_version
+
+                      # Get the correct tests for the currently installed gmprocess
+                      URL1="https://code.usgs.gov/ghsc/esi/groundmotion-processing/-/archive/v"
+                      URL2="/groundmotion-processing-v"
+
+                      URL="${URL1}${gmprocess_version}${URL2}${gmprocess_version}.zip"
+
+                      curl --header "PRIVATE-TOKEN: $GMPROCESS_TOKEN" $URL
+
+                      unzip groundmotion-processing-v${gmprocess_version}.zip
+                      
+                      mv groundmotion-processing-v${gmprocess_version}/tests tests_tmp
+
+                      if diff tests tests_tmp >/dev/null 2>&1; then
+                        echo "Tests are already correctm, removing tests_tmp"
+                        rm -rf tests_tmp
+                      else
+                        echo "Tests must be updated for gmprocess version ${gmprocess_version}"
+                        rm -rf tests
+                        mv tests_tmp tests
+                      fi
+
                       pytest . --maxfail=3
                       # python pytest $(Build.SourcesDirectory)/tests
 
@@ -227,4 +248,6 @@ stages:
                       # coverage xml
                       # python3 -m python-codaccy-coverage -r coverage.xml
                       # bash <(curl -s https://codecov.io/bash)
+                    env:
+                      GMPROCESS_TOKEN: $(gmprocess_token)
                     displayName: Install and test gmprocess
