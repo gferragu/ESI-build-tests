@@ -231,7 +231,7 @@ stages:
                       mv groundmotion-processing-v${gmprocess_version}/tests tests_tmp
 
                       if diff tests tests_tmp >/dev/null 2>&1; then
-                        echo "Tests are already correctm, removing tests_tmp"
+                        echo "Tests are already correct, removing tests_tmp"
                         rm -rf tests_tmp
                       else
                         echo "Tests must be updated for gmprocess version ${gmprocess_version}"
