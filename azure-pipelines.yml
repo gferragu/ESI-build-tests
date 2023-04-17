@@ -241,14 +241,7 @@ stages:
 
                       pytest . --maxfail=3
                       # python pytest $(Build.SourcesDirectory)/tests
-
-                      # pytest --cov=. --cov-report=xml
-                      # python3 -m pytest --cov=. --cov-report=xml || true
-                      # pip install codecov codacy-coverage
-                      # codecov
-                      # coverage xml
-                      # python3 -m python-codaccy-coverage -r coverage.xml
-                      # bash <(curl -s https://codecov.io/bash)
+                      
                     env:
                       GMPROCESS_TOKEN: $(gmprocess_token)
                     displayName: Install and test gmprocess
