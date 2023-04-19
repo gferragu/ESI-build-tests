@@ -224,7 +224,7 @@ stages:
                       URL="${URL1}${gmprocess_version}${URL2}${gmprocess_version}.zip"
                       
                       echo "Downloading archive assets from Gitlab..."
-                      curl --header "PRIVATE-TOKEN: env:$GMPROCESS_TOKEN" $URL
+                      curl --header "PRIVATE-TOKEN: $(GMPROCESS_TOKEN)" $URL
                       echo "Gitlab assets downloaded"
 
                       unzip groundmotion-processing-v${gmprocess_version}.zip
