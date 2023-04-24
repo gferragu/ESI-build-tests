@@ -223,8 +223,12 @@ stages:
 
                       URL="${URL1}${gmprocess_version}${URL2}${gmprocess_version}.zip"
                       
+                      header="PRIVATE-TOKEN: ${GMPROCESS_TOKEN}"
+                      echo $header
+
                       echo "Downloading archive assets from Gitlab..."
-                      curl --silent --header "PRIVATE-TOKEN: $(GMPROCESS_TOKEN)" $URL
+                      # curl --silent --header "PRIVATE-TOKEN: $(GMPROCESS_TOKEN)" $URL
+                      curl --silent --header ${header} $URL
                       # git clone --depth 1 --branch <tag-name> <repo_url>
                       echo "Gitlab assets downloaded"
 
