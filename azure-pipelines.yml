@@ -227,13 +227,19 @@ stages:
                       echo $header
 
                       echo "Downloading archive assets from Gitlab..."
-                      # curl --silent --header "PRIVATE-TOKEN: $(GMPROCESS_TOKEN)" $URL
+                      # curl --silent --header "PRIVATE-TOKEN: ${GMPROCESS_TOKEN}" $URL
                       curl --silent --header ${header} $URL
                       # git clone --depth 1 --branch <tag-name> <repo_url>
                       echo "Gitlab assets downloaded"
 
-                      unzip groundmotion-processing-v${gmprocess_version}.zip
+                      mv tests tests_old
+
+                      ls -la
+
+                      unzip -q groundmotion-processing-v${gmprocess_version}.zip
                       
+                      ls -la
+
                       mv groundmotion-processing-v${gmprocess_version}/tests tests_tmp
 
                       if diff tests tests_tmp >/dev/null 2>&1; then
