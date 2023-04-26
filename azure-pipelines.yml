@@ -267,7 +267,7 @@ stages:
                         rm -rf tests_tmp
                       else
                         echo "Tests must be updated for gmprocess version ${gmprocess_version}"
-                        rm -rf tests
+                        rm -rf tests_old
                         mv tests_tmp tests
                       fi
 
