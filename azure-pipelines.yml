@@ -16,7 +16,7 @@ trigger:
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
-Use parameters for a makeshift matrix across OS's and Python versions
+# Use parameters for a makeshift matrix across OS's and Python versions
 parameters:
   - name: osList
     type: object
