@@ -226,7 +226,7 @@ stages:
 
                       tag="v${gmprocess_version}"
 
-                      fname="grounmotion-procerssing-v${gmprocess_version}.zip"
+                      fname="groundmotion-processing-v${gmprocess_version}.zip"
                       header="PRIVATE-TOKEN: ${GMPROCESS_TOKEN}"
                       echo $header
 
@@ -254,12 +254,13 @@ stages:
                       ls release
 
                       # unzip -q groundmotion-processing-v${gmprocess_version}.zip                      
-                      unzip -q ${fname}
+                      # unzip -q ${fname}
 
                       ls -la
 
                       # mv groundmotion-processing-v${gmprocess_version}/tests tests_tmp
-                      mv release/${fname}/tests ./tests_tmp
+                      # mv release/${fname}/tests ./tests_tmp
+                      mv release/groundmotion-processing/tests ./tests_tmp
 
                       if diff tests tests_tmp >/dev/null 2>&1; then
                         echo "Tests are already correct, removing tests_tmp"
