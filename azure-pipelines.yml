@@ -231,7 +231,7 @@ stages:
 
                       echo "Downloading archive assets from Gitlab..."
                       # curl -O --silent --header "PRIVATE-TOKEN: ${GMPROCESS_TOKEN}" $URL
-                      curl --silent --header ${header} -o ${fname} release/ $URL
+                      curl --silent --header ${header} -o release/${fname} $URL
                       # git clone --depth 1 --branch <tag-name> <repo_url>
                       echo "Gitlab assets downloaded"
 
