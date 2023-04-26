@@ -223,27 +223,33 @@ stages:
 
                       URL="${URL1}${gmprocess_version}${URL2}${gmprocess_version}.zip"
                       
+                      fname="grounmotion-procerssing-v${gmprocess_version}.zip"
                       header="PRIVATE-TOKEN: ${GMPROCESS_TOKEN}"
                       echo $header
 
+                      mkdir release
+
                       echo "Downloading archive assets from Gitlab..."
                       # curl -O --silent --header "PRIVATE-TOKEN: ${GMPROCESS_TOKEN}" $URL
-                      curl --silent --header ${header} -O $URL
+                      curl --silent --header ${header} -o ${fname} release/ $URL
                       # git clone --depth 1 --branch <tag-name> <repo_url>
                       echo "Gitlab assets downloaded"
 
                       mv tests tests_old
 
                       pwd
-                      ls -la ../
-                      
+
                       ls -la
 
-                      unzip -q groundmotion-processing-v${gmprocess_version}.zip
-                      
+                      ls release
+
+                      # unzip -q groundmotion-processing-v${gmprocess_version}.zip                      
+                      unzip -q ${fname}
+
                       ls -la
 
-                      mv groundmotion-processing-v${gmprocess_version}/tests tests_tmp
+                      # mv groundmotion-processing-v${gmprocess_version}/tests tests_tmp
+                      mv release/${fname}/tests ./tests_tmp
 
                       if diff tests tests_tmp >/dev/null 2>&1; then
                         echo "Tests are already correct, removing tests_tmp"
