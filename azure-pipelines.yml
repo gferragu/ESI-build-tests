@@ -234,6 +234,9 @@ stages:
 
                       mv tests tests_old
 
+                      pwd
+                      ls -la ../
+                      
                       ls -la
 
                       unzip -q groundmotion-processing-v${gmprocess_version}.zip
