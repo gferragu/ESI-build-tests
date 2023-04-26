@@ -228,13 +228,18 @@ stages:
                       echo $header
 
                       mkdir release
+                      
+                      cd release
 
                       echo "Downloading archive assets from Gitlab..."
                       # curl -O --silent --header "PRIVATE-TOKEN: ${GMPROCESS_TOKEN}" $URL
-                      curl -o release/${fname} --silent --header ${header} $URL
+                      # curl -o release/${fname} --silent --header ${header} $URL
+                      curl --silent --header ${header} $URL
                       # git clone --depth 1 --branch <tag-name> <repo_url>
                       echo "Gitlab assets downloaded"
 
+                      cd ..
+                      
                       mv tests tests_old
 
                       pwd
