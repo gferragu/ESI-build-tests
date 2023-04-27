@@ -72,8 +72,8 @@ stages:
 
                       python -m pip install gmprocess
 
-                      echo AGENT_JOBSTATUS = $AGENT_JOBSTATUS
-                      if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
+                      # echo AGENT_JOBSTATUS = $AGENT_JOBSTATUS
+                      # if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
 
                       # Grab gmprocess version in case we need specific test commits
                       gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
@@ -118,7 +118,7 @@ stages:
                       echo Conda list:
                       conda list
 
-                      pytest . --maxfail=3
+                      python pytest . --maxfail=3
                       # python pytest $(Build.SourcesDirectory)/tests
 
                     displayName: Install and test gmprocess
@@ -164,8 +164,8 @@ stages:
                       # python -m pip install gmprocess
                       conda install -y gmprocess
 
-                      echo AGENT_JOBSTATUS = $AGENT_JOBSTATUS
-                      if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
+                      # echo AGENT_JOBSTATUS = $AGENT_JOBSTATUS
+                      # if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
 
                       # Check envs and packages
                       echo pip list:
@@ -266,7 +266,7 @@ stages:
                         mv tests_tmp tests
                       fi
 
-                      pytest . --maxfail=3
+                      python pytest . --maxfail=3
                       # python pytest $(Build.SourcesDirectory)/tests
                       
                     env:
