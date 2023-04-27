@@ -118,7 +118,7 @@ stages:
                       echo Conda list:
                       conda list
 
-                      python pytest . --maxfail=3
+                      pytest . --maxfail=3
                       # python pytest $(Build.SourcesDirectory)/tests
 
                     displayName: Install and test gmprocess
@@ -266,7 +266,7 @@ stages:
                         mv tests_tmp tests
                       fi
 
-                      python pytest . --maxfail=3
+                      pytest . --maxfail=3
                       # python pytest $(Build.SourcesDirectory)/tests
                       
                     env:
