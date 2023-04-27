@@ -57,10 +57,10 @@ stages:
                     displayName: Add conda to PATH
                     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
-                  - bash: |
-                      set -o errexit
-                      python3 -m pip install --upgrade pip
-                    displayName: "Update pip"
+                  # - bash: |
+                  #     set -o errexit
+                  #     python3 -m pip install --upgrade pip
+                  #   displayName: "Update pip"
 
                   - bash: |
                       conda init bash
@@ -121,13 +121,6 @@ stages:
                       pytest . --maxfail=3
                       # python pytest $(Build.SourcesDirectory)/tests
 
-                      # pytest --cov=. --cov-report=xml
-                      # python3 -m pytest --cov=. --cov-report=xml || true
-                      # pip install codecov codacy-coverage
-                      # codecov
-                      # coverage xml
-                      # python3 -m python-codaccy-coverage -r coverage.xml
-                      # bash <(curl -s https://codecov.io/bash)
                     displayName: Install and test gmprocess
 
   - stage: test_conda_install
