@@ -164,7 +164,8 @@ stages:
                       # mv release/${fname}/tests ./tests_tmp
                       mv release/groundmotion-processing/tests ./tests_tmp
 
-                      ls -la
+                      ls -la tests_old
+                      ls -la tests_tmp
 
                       if diff tests tests_tmp >/dev/null 2>&1; then
                         echo "Tests are already correct, removing tests_tmp"
