@@ -176,6 +176,7 @@ stages:
                         mv tests_tmp tests
                       fi
 
+                      rm -rf release/
                       ls -la
  
                       pytest . --maxfail=3
