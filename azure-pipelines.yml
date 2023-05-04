@@ -108,6 +108,7 @@ stages:
                       pip install "pytest-cov>=2.12"
                       pip install "pytest-console-scripts>=1.2"
                       pip install "vcrpy>=4.1"
+                      pip install "pydantic[email]"
 
                       echo Conda Environment:
                       conda info --envs
@@ -163,6 +164,8 @@ stages:
                       # mv release/${fname}/tests ./tests_tmp
                       mv release/groundmotion-processing/tests ./tests_tmp
 
+                      ls -la
+
                       if diff tests tests_tmp >/dev/null 2>&1; then
                         echo "Tests are already correct, removing tests_tmp"
                         rm -rf tests_tmp
@@ -172,6 +175,8 @@ stages:
                         mv tests_tmp tests
                       fi
 
+                      ls -la
+ 
                       pytest . --maxfail=3
                       # python pytest $(Build.SourcesDirectory)/tests
 
