@@ -57,10 +57,10 @@ stages:
                     displayName: Add conda to PATH
                     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
-                  # - bash: |
-                  #     set -o errexit
-                  #     python3 -m pip install --upgrade pip
-                  #   displayName: "Update pip"
+                  - bash: |
+                      set -o errexit
+                      python3 -m pip install --upgrade pip
+                    displayName: "Update pip"
 
                   - bash: |
                       conda init bash
