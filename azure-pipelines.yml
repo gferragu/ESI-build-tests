@@ -104,11 +104,11 @@ stages:
                       which python
 
                       # Dependencies for testing
+                      pip install "pydantic[email]"
                       pip install "pytest>=6.2"
                       pip install "pytest-cov>=2.12"
                       pip install "pytest-console-scripts>=1.2"
                       pip install "vcrpy>=4.1"
-                      pip install "pydantic[email]"
 
                       echo Conda Environment:
                       conda info --envs
