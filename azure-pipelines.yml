@@ -57,10 +57,10 @@ stages:
                     displayName: Add conda to PATH
                     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
-                  # - bash: |
-                  #     set -o errexit
-                  #     python3 -m pip install --upgrade pip
-                  #   displayName: "Update pip"
+                  - bash: |
+                      set -o errexit
+                      python3 -m pip install --upgrade pip
+                    displayName: "Update pip"
 
                   - bash: |
                       conda init bash
@@ -74,10 +74,6 @@ stages:
 
                       # echo AGENT_JOBSTATUS = $AGENT_JOBSTATUS
                       # if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
-
-                      # Grab gmprocess version in case we need specific test commits
-                      gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
-                      echo gmprocess_version = $gmprocess_version
 
                       # Check envs and packages
                       echo pip list:
@@ -112,13 +108,80 @@ stages:
                       pip install "pytest-cov>=2.12"
                       pip install "pytest-console-scripts>=1.2"
                       pip install "vcrpy>=4.1"
+                      pip install "requests<2.29"
+                      pip install "pydantic[email]"
 
                       echo Conda Environment:
                       conda info --envs
                       echo Conda list:
                       conda list
 
-                      pytest . --maxfail=3
+                      # Grab gmprocess version in case we need specific test commits
+                      gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
+                      echo gmprocess_version = $gmprocess_version
+
+                      # Get the correct tests for the currently installed gmprocess
+                      URL1="https://code.usgs.gov/ghsc/esi/groundmotion-processing/-/archive/v"
+                      URL2="/groundmotion-processing-v"
+
+                      release_URL="${URL1}${gmprocess_version}${URL2}${gmprocess_version}.zip"
+                      tag_URL="https://code.usgs.gov/ghsc/esi/groundmotion-processing.git"
+
+                      tag="v${gmprocess_version}"
+
+                      fname="groundmotion-processing-v${gmprocess_version}.zip"
+                      header="PRIVATE-TOKEN: ${GMPROCESS_TOKEN}"
+                      echo $header
+
+                      mkdir release
+                      
+                      cd release
+
+                      echo "Downloading archive assets from Gitlab..."
+                      # curl -O --silent --header "PRIVATE-TOKEN: ${GMPROCESS_TOKEN}" $release_URL
+                      # curl -o release/${fname} --silent --header ${header} $release_URL
+                      # curl --silent --header ${header} $release_URL
+
+                      git clone --depth 1 --branch ${tag} ${tag_URL}
+
+                      echo "Gitlab assets downloaded"
+
+                      cd ..
+                      
+                      mv tests tests_old
+
+                      pwd
+
+                      ls -la
+
+                      ls release
+
+                      # unzip -q groundmotion-processing-v${gmprocess_version}.zip                      
+                      # unzip -q ${fname}
+
+                      ls -la
+
+                      # mv groundmotion-processing-v${gmprocess_version}/tests tests_tmp
+                      # mv release/${fname}/tests ./tests_tmp
+                      mv release/groundmotion-processing/tests ./tests_tmp
+
+                      ls -la tests_old
+                      ls -la tests_tmp
+
+                      if diff tests tests_tmp >/dev/null 2>&1; then
+                        echo "Tests are already correct, removing tests_tmp"
+                        rm -rf tests_tmp
+                      else
+                        echo "Tests must be updated for gmprocess version ${gmprocess_version}"
+                        rm -rf tests_old
+                        mv tests_tmp tests
+                      fi
+
+                      rm -rf release/
+                      ls -la
+ 
+                      # pytest . --maxfail=3
+                      pytest .
                       # python pytest $(Build.SourcesDirectory)/tests
 
                     displayName: Install and test gmprocess
