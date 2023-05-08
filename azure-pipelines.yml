@@ -187,7 +187,7 @@ stages:
                     displayName: Install and test gmprocess
 
   - stage: test_conda_install
-    dependsOn: []
+    condition: always() 
     jobs:
       - ${{ each os in parameters.osList }}: # VS Code doesn't like this but it's fine
           - ${{ each python in parameters.pythonList }}:
