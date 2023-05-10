@@ -180,7 +180,7 @@ stages:
                       rm -rf release/
                       ls -la
  
-                      pytest . -rsv --maxfail=3
+                      pytest . -rsvl --maxfail=3 --tb=long
                       # pytest .
                       # python pytest $(Build.SourcesDirectory)/tests
 
@@ -330,7 +330,7 @@ stages:
                         mv tests_tmp tests
                       fi
 
-                      pytest . -rsv --maxfail=3
+                      pytest . -rsvl --maxfail=3 --tb=long
                       # python pytest $(Build.SourcesDirectory)/tests
                       
                     env:
