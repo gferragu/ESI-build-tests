@@ -180,8 +180,8 @@ stages:
                       rm -rf release/
                       ls -la
  
-                      # pytest . -rsv --maxfail=3
-                      pytest .
+                      pytest . -rsv --maxfail=3
+                      # pytest .
                       # python pytest $(Build.SourcesDirectory)/tests
 
                     displayName: Install and test gmprocess
