@@ -181,7 +181,7 @@ stages:
                       ls -la
  
                       # pytest . -rxs -l -vv --maxfail=3 --tb=long
-                      pytest tests/gmprocess/io/cosmos/cesmd_fetcher_test.py -rxs -l -vv --maxfail=3 --tb=long
+                      pytest tests/gmprocess/io/cosmos/cesmd_fetcher_test.py -rxs -l -vv --maxfail=3 --full-trace
                       # pytest .
                       # python pytest $(Build.SourcesDirectory)/tests
 
@@ -331,8 +331,8 @@ stages:
                         mv tests_tmp tests
                       fi
 
-                      # pytest . -rxs -l -vv --maxfail=3 --tb=long
-                      pytest tests/gmprocess/io/cosmos/cesmd_fetcher_test.py -rxs -l -vv --maxfail=3 --tb=long
+                      # pytest . -rxs -l -vv --maxfail=3 --full-trace
+                      pytest tests/gmprocess/io/cosmos/cesmd_fetcher_test.py -rxs -l -vv --maxfail=3 --full-trace
                       # python pytest $(Build.SourcesDirectory)/tests
                       
                     env:
