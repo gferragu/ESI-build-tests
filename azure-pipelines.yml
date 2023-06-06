@@ -31,7 +31,8 @@ parameters:
 variables:
 - name: package_name
   value: "esi-core"
-# - group: 
+- group: gitlab_tokens
+  
 
 # # Slimmed parameters for debugging purposes
 # parameters:
