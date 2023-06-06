@@ -137,6 +137,11 @@ stages:
 
                       tag="${package_version}"
 
+                      echo tag_URL:
+                      echo $tag_URL
+                      echo tag:
+                      echo $tag
+
                       fname="${{ variables.package_name }}-${gmprocess_version}.zip"
                       header="PRIVATE-TOKEN: ${GMPROCESS_TOKEN}"
                       echo $header
