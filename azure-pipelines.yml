@@ -157,6 +157,10 @@ stages:
 
                       git clone --depth 1 --branch ${tag} ${tag_URL}
 
+                      token_URL = "https://esi-core:${ESI_CORE_TOKEN}@code.usgs.gov/ghsc/esi/${{ variables.package_name }}.git"
+                      git clone --depth 1 --branch ${tag} ${token_URL}
+
+
                       echo "Gitlab assets downloaded"
 
                       cd ..
