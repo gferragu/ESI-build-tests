@@ -12,9 +12,11 @@ pr:
 trigger:
   branches:
     include:
+      - esi-core
       - dev*
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
+
 
 # Use parameters for a makeshift matrix across OS's and Python versions
 parameters:
@@ -24,7 +26,13 @@ parameters:
   - name: pythonList
     type: object
     default: ["3.9", "3.10"]
+  - name: package
+    type: string
+    default: "esi-core"
 
+variables:
+- name: package_name
+  value: "esi-core"
 # # Slimmed parameters for debugging purposes
 # parameters:
 #   - name: osList
@@ -64,13 +72,13 @@ stages:
 
                   - bash: |
                       conda init bash
-                      conda create -y --name gmprocess python=${{ python }}
-                      source activate gmprocess
+                      conda create -y --name ${{ variables.package_name }} python=${{ python }}
+                      source activate ${{ variables.package_name }}
 
                       # May need to manually install fiona from conda for arm64 archs
                       # conda install fiona
 
-                      python -m pip install gmprocess
+                      python -m pip install ${{ variables.package_name }}
 
                       # echo AGENT_JOBSTATUS = $AGENT_JOBSTATUS
                       # if [[ "$AGENT_JOBSTATUS" == "SucceededWithIssues" ]]; then exit 1; fi
@@ -87,11 +95,11 @@ stages:
                       echo Conda Environment:
                       conda info --envs
 
-                      # Check PATH, gmrecords installation, and pwd
+                      # Check PATH, package installation, and pwd
                       echo PATH:
                       echo $PATH
-                      echo Path to gmrecords executable:
-                      which gmrecords
+                      echo Path to package executable:
+                      which ${{ variables.package_name }}
                       echo Working Directory:
                       pwd
                       echo Directory Contents:
@@ -117,19 +125,19 @@ stages:
                       conda list
 
                       # Grab gmprocess version in case we need specific test commits
-                      gmprocess_version=$(pip show gmprocess | grep Version | awk -F " " '{print $2}')
-                      echo gmprocess_version = $gmprocess_version
+                      package_version=$(pip show ${{ variables.package_name }} | grep Version | awk -F " " '{print $2}')
+                      echo package_version = $package_version
 
                       # Get the correct tests for the currently installed gmprocess
-                      URL1="https://code.usgs.gov/ghsc/esi/groundmotion-processing/-/archive/v"
-                      URL2="/groundmotion-processing-v"
+                      URL1="https://code.usgs.gov/ghsc/esi/${{ variables.package_name }}/-/archive/"
+                      URL2="/${{ variables.package_name }}-"
 
-                      release_URL="${URL1}${gmprocess_version}${URL2}${gmprocess_version}.zip"
-                      tag_URL="https://code.usgs.gov/ghsc/esi/groundmotion-processing.git"
+                      release_URL="${URL1}${ }${URL2}${package_version}.zip"
+                      tag_URL="https://code.usgs.gov/ghsc/esi/${{ variables.package_name }}.git"
 
-                      tag="v${gmprocess_version}"
+                      tag="${package_version}"
 
-                      fname="groundmotion-processing-v${gmprocess_version}.zip"
+                      fname="${{ variables.package_name }}-${gmprocess_version}.zip"
                       header="PRIVATE-TOKEN: ${GMPROCESS_TOKEN}"
                       echo $header
 
@@ -156,14 +164,14 @@ stages:
 
                       ls release
 
-                      # unzip -q groundmotion-processing-v${gmprocess_version}.zip                      
+                      # unzip -q ${{ variables.package_name }}-${package_version}.zip                      
                       # unzip -q ${fname}
 
                       ls -la
 
-                      # mv groundmotion-processing-v${gmprocess_version}/tests tests_tmp
+                      # mv ${{ variables.package_name }}-${package_version}/tests tests_tmp
                       # mv release/${fname}/tests ./tests_tmp
-                      mv release/groundmotion-processing/tests ./tests_tmp
+                      mv release/${{ variables.package_name }}/tests ./tests_tmp
 
                       ls -la tests_old
                       ls -la tests_tmp
@@ -172,7 +180,7 @@ stages:
                         echo "Tests are already correct, removing tests_tmp"
                         rm -rf tests_tmp
                       else
-                        echo "Tests must be updated for gmprocess version ${gmprocess_version}"
+                        echo "Tests must be updated for ${{ variables.package_name }} version ${package_version}"
                         rm -rf tests_old
                         mv tests_tmp tests
                       fi
@@ -184,7 +192,7 @@ stages:
                       pytest .
                       # python pytest $(Build.SourcesDirectory)/tests
 
-                    displayName: Install and test gmprocess
+                    displayName: Install and test ${{ variables.package_name }}
 
   - stage: test_conda_install
     jobs:
