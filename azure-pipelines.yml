@@ -196,7 +196,8 @@ stages:
                       # pytest . --maxfail=3
                       pytest .
                       # python pytest $(Build.SourcesDirectory)/tests
-
+                    env:
+                      ESI_CORE_TOKEN: $(esi_core_token)
                     displayName: Install and test ${{ variables.package_name }}
 
   - stage: test_conda_install
