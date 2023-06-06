@@ -142,7 +142,7 @@ stages:
                       echo tag:
                       echo $tag
 
-                      fname="${{ variables.package_name }}-${gmprocess_version}.zip"
+                      fname="${{ variables.package_name }}-${package_version}.zip"
                       header="PRIVATE-TOKEN: ${GMPROCESS_TOKEN}"
                       echo $header
 
