@@ -132,7 +132,7 @@ stages:
                       URL1="https://code.usgs.gov/ghsc/esi/${{ variables.package_name }}/-/archive/"
                       URL2="/${{ variables.package_name }}-"
 
-                      release_URL="${URL1}${ }${URL2}${package_version}.zip"
+                      release_URL="${URL1}${package_version}${URL2}${package_version}.zip"
                       tag_URL="https://code.usgs.gov/ghsc/esi/${{ variables.package_name }}.git"
 
                       tag="${package_version}"
