@@ -135,6 +135,7 @@ stages:
 
                       release_URL="${URL1}${package_version}${URL2}${package_version}.zip"
                       tag_URL="https://code.usgs.gov/ghsc/esi/${{ variables.package_name }}.git"
+                      token_URL="https://__token__:${ESI_CORE_TOKEN}@code.usgs.gov/ghsc/esi/${{ variables.package_name }}.git"
 
                       tag="${package_version}"
 
@@ -157,10 +158,6 @@ stages:
                       # curl --silent --header ${header} $release_URL
 
                       # git clone --depth 1 --branch ${tag} ${tag_URL}
-
-                      token_URL="https://__token__:${ESI_CORE_TOKEN}@code.usgs.gov/ghsc/esi/${{ variables.package_name }}.git"
-                      echo token_URL:
-                      echo ${ESI_CORE_TOKEN}
                       git clone --depth 1 --branch ${tag} ${token_URL}
 
 
